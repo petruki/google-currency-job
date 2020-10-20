@@ -38,6 +38,8 @@ function getResults({ data, fee }) {
         result.targetFeeAmount = (parseFloat(result.targetAmount.replace(',', '')) * (parseFloat(fee)/100 + 1)).toFixed(2)
     }
 
+    result.date = new Date().toString();
+
     return result;
 }
 

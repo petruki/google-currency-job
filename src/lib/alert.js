@@ -5,6 +5,8 @@ function writeOpenLog(results, target) {
     fs.writeFile('log.txt', `
 GOOGLE CURRENCY JOB ALERT
 ###################################
+${results.date}
+
 From: ${results.source}
 To: ${results.target}
 Fee: ${results.fee}
