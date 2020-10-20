@@ -5,3 +5,5 @@ The purpose of this piece of software is only for learning and must not be used 
 - Schedule query based on the chosen conversion
 - Define additional fee
 - Define query interval
+- Define conversion target
+- Open log alert when it reaches the target
