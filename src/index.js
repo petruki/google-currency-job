@@ -7,11 +7,7 @@ function startJob(query, fee, interval) {
     let startTime = new Date(Date.now());
     let endTime = new Date(startTime.getTime() + (60 * 1000));
 
-    schedule.scheduleJob('Google Currency Job', {
-        start: startTime,
-        end: endTime,
-        rule: `*/${interval} * * * * *`
-    }, function () {
+    schedule.scheduleJob('Google Currency Job', `*/${interval} * * * * *`, function () {
         googleCurrencyQuery({ query, fee }).then(results => {
             console.log(results);
             if (results.targetAmount <= targetAlarm) {
