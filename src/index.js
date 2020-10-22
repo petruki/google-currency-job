@@ -1,19 +1,27 @@
 const googleCurrencyQuery = require('./lib/google-currency-query');
-const writeOpenLog = require('./lib/alert');
-const schedule = require('node-schedule');
+const writeOpenLog = require('./lib/notepad-alert');
+const sendMessage = require('./lib/slack-hook');
 let targetAlarm;
 
+const notepad_alert = process.env.NOTEPAD_ALERT ? process.env.NOTEPAD_ALERT === 'true' : false;
+const slack_alert = process.env.SLACK_ALERT ? process.env.SLACK_ALERT === 'true' : false;
+
+console.log(`### Google Currency Job Settings ###`);
+console.log(`Notepad alert is: ${notepad_alert}`);
+console.log(`Slack alert is: ${slack_alert}\n`);
+
 function startJob(query, fee, interval) {
-    schedule.scheduleJob('Google Currency Job', `*/${interval} * * * * *`, function () {
+    setInterval(() => {
         googleCurrencyQuery({ query, fee }).then(results => {
             console.log(results);
             if (results.targetAmount <= targetAlarm) {
-                writeOpenLog(results, targetAlarm);
+                if (notepad_alert) writeOpenLog(results, targetAlarm);
+                if (slack_alert) sendMessage(results, targetAlarm);
             }
         }).catch(e => {
             console.log(e);
         })
-    });
+    }, interval * 1000);
 }
 
 const readLine = require('readline').createInterface({
@@ -21,10 +29,10 @@ const readLine = require('readline').createInterface({
     output: process.stdout
 });
 
-readLine.question('From (CAD, USD, AUS, REAIS): ', (from) => {
+readLine.question('From: ', (from) => {
     let query = `1 ${from || 'cad'}`;
 
-    readLine.question('To (CAD, USD, AUS, REAIS): ', (to) => {
+    readLine.question('To: ', (to) => {
         query = `${query} to ${to || 'reais'}`;
 
         readLine.question('Interval (sec): ', (input) => {
@@ -32,11 +40,13 @@ readLine.question('From (CAD, USD, AUS, REAIS): ', (from) => {
 
             readLine.question('Fee (%): ', (input) => {
                 let fee = input || '0.28';
-                
+
                 readLine.question('Target: ', (target) => {
                     readLine.close();
-
                     targetAlarm = target || 0;
+
+                    console.log(`\nQuery: ${query}`);
+                    console.log(`Interval: ${interval}\n`);
                     startJob(query, `${fee}%`, interval);
                 });
             });

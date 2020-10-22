@@ -7,3 +7,14 @@ The purpose of this piece of software is only for learning and must not be used 
 - Define query interval
 - Define conversion target
 - Open log alert when it reaches the target
+
+# Configuration
+Create an environment file .env-cmdrc containing the following:
+
+```
+"dev": {
+    "NOTEPAD_ALERT": "true",
+    "SLACK_ALERT": "true",
+    "SLACK_HOOK": "YOUR_SLACK_HOOK_URL"
+}
+```
