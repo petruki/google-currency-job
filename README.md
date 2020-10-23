@@ -7,6 +7,7 @@ The purpose of this piece of software is only for learning and must not be used 
 - Define query interval
 - Define conversion target
 - Open log alert when it reaches the target
+- Send alert via Slack Hook integration
 
 # Configuration
 Create an environment file .env-cmdrc containing the following:
