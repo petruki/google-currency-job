@@ -3,7 +3,7 @@ const writeOpenLog = require('./lib/notepad-alert');
 const sendMessage = require('./lib/slack-hook');
 
 let targetAlarm, maxTarget = 0, minTarget = Number.MAX_VALUE;
-let query, interva, fee;
+let query, interval, fee, lastResults, timer = 1;
 
 const notepad_alert = process.env.NOTEPAD_ALERT ? process.env.NOTEPAD_ALERT === 'true' : false;
 const slack_alert = process.env.SLACK_ALERT ? process.env.SLACK_ALERT === 'true' : false;
@@ -27,9 +27,16 @@ const printConsole = (results) => {
     }
 };
 
+const progress = () => {
+    printConsole(lastResults);
+    console.log(`\n-> Next query: ${((timer++ * 100)/interval).toFixed(1)}%`);
+}
+
 const job = () => {
     googleCurrencyQuery({ query, fee }).then(results => {
-            
+        lastResults = results;
+        timer = 1;
+
         if (results.targetAmount >= maxTarget) maxTarget = results.targetAmount;
         if (results.targetAmount <= minTarget) minTarget = results.targetAmount;
 
@@ -50,6 +57,7 @@ const job = () => {
 const scheduleJob = (query, fee, interval) => {
     job();
     setInterval(() => job(), interval * 1000);
+    setInterval(() => progress(), 1000);
 };
 
 const askFrom = () => {
