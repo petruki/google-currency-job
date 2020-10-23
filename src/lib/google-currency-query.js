@@ -83,4 +83,22 @@ function googleCurrencyQuery(config) {
     });
 }
 
-module.exports = googleCurrencyQuery;
+const log = (results, target) => {
+    return {
+        text:
+            `*Alert*: ${results.date}\n\n` +
+
+            `*From*: ${results.source}\n` +
+            `*To*: ${results.target}\n` +
+            `*Fee*: ${results.fee}\n` +
+            `*Current converion*: ${results.targetAmount}\n` +
+            `*Current converion (fee)*: ${results.targetFeeAmount}\n\n` +
+            
+            `*Alarm set to*: ${target}`
+    }
+};
+
+module.exports = {
+    googleCurrencyQuery,
+    log
+}

@@ -1,4 +1,4 @@
-const googleCurrencyQuery = require('./lib/google-currency-query');
+const { googleCurrencyQuery } = require('./lib/google-currency-query');
 const writeOpenLog = require('./lib/notepad-alert');
 const sendMessage = require('./lib/slack-hook');
 let targetAlarm;
@@ -17,6 +17,9 @@ function startJob(query, fee, interval) {
             if (results.targetAmount <= targetAlarm) {
                 if (notepad_alert) writeOpenLog(results, targetAlarm);
                 if (slack_alert) sendMessage(results, targetAlarm);
+
+                targetAlarm = results.targetAmount - 0.01;
+                console.log(`### Target alarm changed to: ${targetAlarm.toFixed(2)}`);
             }
         }).catch(e => {
             console.log(e);

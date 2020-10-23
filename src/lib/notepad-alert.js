@@ -1,20 +1,9 @@
 const fs = require('fs');
 const childProcess = require('child_process');
+const { log } = require('./google-currency-query');
 
 function writeOpenLog(results, target) {
-    fs.writeFile('log.txt', `
-GOOGLE CURRENCY JOB ALERT
-###################################
-${results.date}
-
-From: ${results.source}
-To: ${results.target}
-Fee: ${results.fee}
-Current converion: ${results.targetAmount}
-Current converion (fee): ${results.targetFeeAmount}
-
-Alarm set to: ${target} 
-###################################`, function (err) {
+    fs.writeFile('log.txt', log(results, target).text, function (err) {
         if (err) return console.log(err);
 
         childProcess.exec('start notepad log.txt', function (err, stdout, stderr) {
@@ -22,7 +11,6 @@ Alarm set to: ${target}
                 console.error(err);
                 return;
             }
-            process.exit(0);
         })
     });
 }
