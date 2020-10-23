@@ -11,14 +11,14 @@ function getResults({ data, fee }) {
         target: undefined,
         fee: undefined,
         targetFeeAmount: undefined
-    }
+    };
 
     const values = $('span.DFlfde').contents();
     values.each((index, elem) => {
         if (index === 0) {
-            result.sourceAmount = elem.data
+            result.sourceAmount = elem.data;
         } else {
-            result.targetAmount = elem.data
+            result.targetAmount = elem.data;
         }
         
     });
@@ -26,16 +26,16 @@ function getResults({ data, fee }) {
     const currencies = $('span.vLqKYe, span.MWvIVe').contents();
     currencies.each((index, elem) => {
         if (index === 0) {
-            result.source = elem.data
+            result.source = elem.data;
         } else {
-            result.target = elem.data
+            result.target = elem.data;
         }
     });
 
 
     if (fee) {
-        result.fee = fee 
-        result.targetFeeAmount = (parseFloat(result.targetAmount.replace(',', '')) * (parseFloat(fee)/100 + 1)).toFixed(2)
+        result.fee = fee;
+        result.targetFeeAmount = parseFloat(result.targetAmount * (fee/10 + 1)).toFixed(2);
     }
 
     result.date = new Date().toString();
@@ -50,6 +50,7 @@ function googleCurrencyQuery(config) {
         fee,
         options = {}
     } = config;
+
     const defaultOptions = {
         url: 'https://www.google.com/search',
         qs: {
@@ -95,7 +96,7 @@ const log = (results, target) => {
             `*Current converion (fee)*: ${results.targetFeeAmount}\n\n` +
             
             `*Alarm set to*: ${target}`
-    }
+    };
 };
 
 module.exports = {
