@@ -99,7 +99,7 @@ const askFee = () => {
 const askTarget = () => {
     return new Promise((resolve, reject) => {
         readLine.question('Target: ', (target) => {
-            targetAlarm = target || 0;
+            targetAlarm = target || 1;
             resolve();
         });
     });
