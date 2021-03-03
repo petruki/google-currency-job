@@ -46,7 +46,6 @@ function getResults({ data, fee }) {
 function googleCurrencyQuery(config) {
     const {
         query,
-        userAgent,
         fee,
         options = {}
     } = config;
@@ -57,8 +56,7 @@ function googleCurrencyQuery(config) {
             q: query
         },
         headers: {
-            'User-Agent': userAgent ||
-                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:34.0) Gecko/20100101 Firefox/34.0'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0'
         }
     };
 
